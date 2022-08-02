@@ -27,3 +27,4 @@ RUN apt-get update && \
 COPY modsec_includes.conf /usr/local/nginx/conf/modsec_includes.conf
 COPY modsecurity.conf /usr/local/nginx/conf/modsecurity.conf
 COPY crs-setup.conf /usr/local/nginx/conf/rules/crs-setup.conf
+COPY nginx.tmpl /app/nginx.tmpl
