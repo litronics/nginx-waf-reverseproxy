@@ -1,7 +1,14 @@
-from nginxproxy/nginx-proxy
+FROM nginxproxy/nginx-proxy
+COPY zscaler_certs/ZscalerRootCertificate-2048-SHA256.crt /usr/local/share/ca-certificates/zscaler/ZscalerRootCertificate-2048-SHA256.crt
 RUN apt-get update && \
+      apt-get upgrade -y && \
       apt-get install -y wget tar apt-utils autoconf automake build-essential git libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre++-dev libtool libxml2 libxml2-dev libssl-dev libyajl-dev pkgconf zlib1g-dev && \
-      git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity && \
+      apt-get install -y --reinstall ca-certificates && \
+      mkdir /usr/local/share/ca-certificates/cacert.org && \
+      wget -P /usr/local/share/ca-certificates/cacert.org http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt && \
+      update-ca-certificates && \
+      git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt && \
+      git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity.git && \
       cd ModSecurity && \
       git submodule init && \
       git submodule update && \
